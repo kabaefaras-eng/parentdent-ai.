@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#13796f"><meta name="description" content="ParentDent AI ผู้ช่วยผู้ปกครองดูแลสุขภาพช่องปากเด็ก">
+<link rel="manifest" href="manifest.webmanifest">
+<title>ParentDent AI</title>
+<style>
+:root{--teal:#13796f;--teal-dark:#0d5f58;--mint:#e8f6f2;--ink:#19383a;--muted:#6d8585;--line:#dceae6;--bg:#f4f8f6;--white:#fff;--gold:#f3b65e;--red:#c45454}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--ink);padding-bottom:84px}
+header{background:linear-gradient(125deg,#0d625c,#219487);color:white;padding:18px 16px 22px;border-radius:0 0 24px 24px}
+.top{max-width:1000px;margin:auto;display:flex;align-items:center;gap:11px}.brandicon{width:45px;height:45px;border-radius:15px;background:#ffffff24;display:grid;place-items:center;font-size:25px}
+h1{font-size:19px;margin:0}header p{font-size:12px;margin:3px 0 0;color:#d8f2ed}
+main{max-width:1000px;margin:15px auto;padding:0 13px}.view{display:none}.view.active{display:block}
+h2{font-size:17px;margin:0 0 12px}.sub{color:var(--muted);font-size:12px;line-height:1.6;margin:-5px 0 13px}
+.card{background:white;border:1px solid var(--line);border-radius:18px;padding:15px;margin-bottom:12px;box-shadow:0 4px 16px #164c4310}
+.hero{background:linear-gradient(120deg,#e6f5ef,#f6fbf8);border:1px solid #d6eee5;border-radius:18px;padding:16px;margin-bottom:12px}
+.hero h2{font-size:19px;color:#155f56;margin-bottom:5px}.hero p{font-size:13px;color:#4c7470;margin:0;line-height:1.6}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.tile{border:1px solid var(--line);background:#fff;border-radius:16px;padding:14px;text-align:left;cursor:pointer;color:var(--ink);min-height:105px}.tile .ico{font-size:23px}.tile b{display:block;margin:6px 0 2px;font-size:13px}.tile small{font-size:11px;color:var(--muted);line-height:1.4}
+label{display:block;font-size:12px;font-weight:650;margin:10px 0 5px}input,select,textarea{width:100%;border:1px solid #cfdfda;border-radius:11px;padding:11px 12px;font:inherit;font-size:14px;background:white;color:var(--ink);outline-color:var(--teal)}textarea{min-height:75px;resize:vertical}
+button{font:inherit}.btn{border:0;border-radius:12px;background:var(--teal);color:white;padding:11px 15px;font-weight:700;cursor:pointer}.btn.secondary{background:#e8f4f1;color:var(--teal-dark)}.btn.danger{background:#fff0ef;color:#a43e3e}.btn.small{padding:8px 10px;font-size:12px}
+.row{display:flex;gap:9px;align-items:center}.row>*{flex:1;min-width:0}.between{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.muted{font-size:11px;color:var(--muted);line-height:1.55}.pill{font-size:10px;border-radius:999px;padding:5px 8px;background:#eaf5f1;color:#286e62;white-space:nowrap}
+.notice{padding:11px 12px;border-radius:12px;background:#fff7e9;color:#76521c;font-size:11px;line-height:1.6;border:1px solid #f5e4c5;margin:10px 0}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#ffffffef;backdrop-filter:blur(12px);border-top:1px solid var(--line);display:flex;justify-content:center;z-index:10;padding:7px 5px calc(7px + env(safe-area-inset-bottom))}
+.navinner{width:min(100%,700px);display:flex;justify-content:space-around}.nav button{border:0;background:none;color:#728987;font-size:10px;padding:5px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer}.nav button span{font-size:20px}.nav button.active{color:var(--teal);font-weight:800}
+.toothgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.tooth{border:1px solid var(--line);border-radius:12px;background:#fff;padding:9px 3px;text-align:center;font-size:11px;cursor:pointer}.tooth strong{display:block;font-size:18px}.tooth.selected{border:2px solid var(--teal);background:var(--mint)}.tooth.flag{background:#fff3e6;border-color:#f1c98d}
+.check{display:flex;gap:9px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #edf2f0;font-size:13px}.check input{width:18px;height:18px;flex:none;margin:1px 0}
+.result{background:#eff8f4;border:1px solid #d8ece4;border-radius:14px;padding:13px;font-size:13px;line-height:1.65}.result strong{color:#176b60}
+.photo{width:100%;max-height:250px;object-fit:contain;background:#f6faf8;border-radius:12px;margin-top:9px}
+.item{border:1px solid var(--line);border-radius:13px;padding:12px;margin:8px 0}.item p{font-size:12px;line-height:1.5;margin:6px 0}.empty{text-align:center;color:var(--muted);padding:25px 8px;font-size:12px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}.stat{background:#f0f8f5;border:1px solid var(--line);border-radius:13px;padding:11px}.stat b{font-size:21px;color:var(--teal);display:block}.stat small{font-size:10px;color:var(--muted)}
+.modalback{position:fixed;inset:0;background:#102c2c66;display:none;align-items:flex-end;justify-content:center;z-index:20}.modalback.show{display:flex}.modal{background:white;border-radius:20px 20px 0 0;padding:18px;width:min(100%,520px);max-height:85vh;overflow:auto}
+footer{text-align:center;font-size:10px;color:#829795;padding:10px}
+@media(min-width:700px){body{padding-bottom:20px}.nav{position:sticky;top:0;bottom:auto;border:1px solid var(--line);border-radius:16px;margin:12px auto 0;width:min(970px,calc(100% - 26px));padding:8px}.navinner{max-width:700px}.grid{grid-template-columns:repeat(3,1fr)}.toothgrid{grid-template-columns:repeat(10,1fr)}.modalback{align-items:center}.modal{border-radius:20px}}
+</style>
+</head>
+<body>
+<header><div class="top"><div class="brandicon">🦷</div><div><h1>ParentDent AI</h1><p>ผู้ช่วยผู้ปกครองดูแลสุขภาพช่องปากเด็ก</p></div><div style="margin-left:auto"><span class="pill" style="background:#ffffff25;color:white">ต้นแบบทดลอง</span></div></div></header>
+<nav class="nav"><div class="navinner">
+<button class="active" data-view="home"><span>🏠</span>หน้าหลัก</button>
+<button data-view="child"><span>👧</span>ข้อมูลเด็ก</button>
+<button data-view="scan"><span>📷</span>ตรวจฟัน</button>
+<button data-view="risk"><span>📝</span>ประเมิน</button>
+<button data-view="staff"><span>🩺</span>เจ้าหน้าที่</button>
+</div></nav>
+<main>
+<section class="view active" id="home">
+<div class="hero"><h2>รอยยิ้มที่ดี เริ่มต้นได้ที่บ้าน 💚</h2><p>บันทึกสิ่งที่สังเกตเกี่ยวกับฟันลูก ประเมินพฤติกรรมเสี่ยง และเตรียมข้อมูลไปพูดคุยกับเจ้าหน้าที่ทันตกรรม</p></div>
+<div class="card"><div class="between"><h2 style="margin:0">ข้อมูลเด็กที่กำลังดูแล</h2><span class="pill" id="homeChildStatus">ยังไม่ได้เพิ่มข้อมูล</span></div><p id="homeChild" class="muted">เพิ่มข้อมูลเด็กเพื่อเริ่มบันทึกสุขภาพช่องปาก</p><button class="btn secondary small" onclick="showView('child')">เพิ่ม / แก้ไขข้อมูลเด็ก</button></div>
+<h2>เมนูหลัก</h2><div class="grid">
+<button class="tile" onclick="showView('scan')"><span class="ico">📷</span><b>บันทึกภาพช่องปาก</b><small>ถ่ายภาพหรือเลือกภาพจากเครื่อง</small></button>
+<button class="tile" onclick="showView('teeth')"><span class="ico">🦷</span><b>แผนผังฟันน้ำนม</b><small>บันทึกซี่ฟันที่ควรสังเกต</small></button>
+<button class="tile" onclick="showView('risk')"><span class="ico">📝</span><b>ประเมินปัจจัยเสี่ยง</b><small>ตอบคำถามพฤติกรรมการดูแลฟัน</small></button>
+<button class="tile" onclick="showView('history')"><span class="ico">📚</span><b>ประวัติและนัดหมาย</b><small>ดูบันทึกและเพิ่มวันนัด</small></button>
+<button class="tile" onclick="showView('assistant')"><span class="ico">🤖</span><b>AI ผู้ช่วยผู้ปกครอง</b><small>สรุปข้อมูลและคำแนะนำ</small></button>
+<button class="tile" onclick="showView('staff')"><span class="ico">🩺</span><b>หน้าสำหรับเจ้าหน้าที่</b><small>ดูสรุปข้อมูลที่ผู้ปกครองบันทึก</small></button>
+</div>
+<div class="notice">แอปนี้เป็นเครื่องมือบันทึกและส่งเสริมสุขภาพช่องปากเบื้องต้น ไม่สามารถวินิจฉัยฟันผุหรือใช้แทนการตรวจโดยทันตบุคลากรได้</div>
+</section>
+
+<section class="view" id="child">
+<div class="card"><h2>👧 ข้อมูลเด็ก</h2><p class="sub">กรอกข้อมูลเท่าที่จำเป็น ไม่ต้องใช้ชื่อ-นามสกุลจริงในต้นแบบ</p>
+<label>ชื่อเล่น / รหัสเด็ก</label><input id="childName" placeholder="เช่น น้องเอ หรือ C001" maxlength="30">
+<div class="row"><div><label>อายุ (ปี)</label><input id="childAge" type="number" min="2" max="12" placeholder="เช่น 6"></div><div><label>ระดับชั้น</label><select id="childClass"><option>อนุบาล</option><option>ประถมศึกษาปีที่ 1</option><option>ประถมศึกษาปีที่ 2</option><option>ประถมศึกษาปีที่ 3</option></select></div></div>
+<label>หมายเหตุที่ต้องการบันทึก (ไม่บังคับ)</label><textarea id="childNote" placeholder="เช่น เคยได้รับการตรวจฟันเมื่อ..."></textarea>
+<button class="btn" onclick="saveChild()">บันทึกข้อมูลเด็ก</button>
+</div></section>
+
+<section class="view" id="scan">
+<div class="card"><h2>📷 บันทึกภาพช่องปาก</h2><p class="sub">ถ่ายภาพฟันในบริเวณที่มีแสงเพียงพอ ใช้เป็นภาพประกอบการติดตามและพูดคุยกับเจ้าหน้าที่</p>
+<label>เลือกหรือถ่ายภาพ</label><input type="file" id="photoInput" accept="image/*" capture="environment">
+<img id="photoPreview" class="photo" style="display:none" alt="ภาพตัวอย่างช่องปาก">
+<label>บริเวณ / สิ่งที่ผู้ปกครองสังเกต</label><select id="photoNote"><option>ภาพรวมช่องปาก</option><option>ฟันหน้าบน</option><option>ฟันหน้าล่าง</option><option>ฟันกรามด้านซ้าย</option><option>ฟันกรามด้านขวา</option><option>บริเวณที่มีจุดสีผิดปกติ</option></select>
+<button class="btn" onclick="savePhoto()">บันทึกภาพ</button>
+<div id="photoList"></div>
+<div class="notice">ภาพถ่ายจากโทรศัพท์อาจมีแสง มุม และความคมชัดจำกัด ระบบนี้ยังไม่มี AI ตรวจภาพทางคลินิก จึงไม่ระบุว่าฟันผุหรือไม่ หากพบจุดผิดปกติควรให้ทันตบุคลากรตรวจยืนยัน</div>
+</div></section>
+
+<section class="view" id="teeth">
+<div class="card"><h2>🦷 แผนผังฟันน้ำนม 20 ซี่</h2><p class="sub">แตะซี่ฟันเพื่อบันทึกสิ่งที่สังเกต ไม่ใช่การวินิจฉัยโรค</p>
+<div class="between"><b style="font-size:13px">ขากรรไกรบน</b><span class="pill">55–51 | 61–65</span></div><div class="toothgrid" id="upperTeeth"></div>
+<div style="height:10px"></div><div class="between"><b style="font-size:13px">ขากรรไกรล่าง</b><span class="pill">85–81 | 71–75</span></div><div class="toothgrid" id="lowerTeeth"></div>
+<div class="notice">เลือกฟันแต่ละซี่เพื่อระบุสิ่งที่สังเกต เช่น จุดสีผิดปกติ แตก/บิ่น ปวด หรือไม่แน่ใจ</div>
+<div id="toothDetails" class="muted">เลือกซี่ฟันเพื่อเริ่มบันทึก</div>
+</div></section>
+
+<section class="view" id="risk">
+<div class="card"><h2>📝 ประเมินปัจจัยเสี่ยงด้านพฤติกรรม</h2><p class="sub">ตอบตามพฤติกรรมในช่วง 7 วันที่ผ่านมา ระบบจะสรุปปัจจัยที่ควรปรับ ไม่ใช่ผลวินิจฉัยฟันผุ</p>
+<div id="questions"></div><button class="btn" onclick="calculateRisk()">สรุปผลการประเมิน</button><div id="riskResult" style="margin-top:12px"></div>
+</div></section>
+
+<section class="view" id="assistant">
+<div class="card"><h2>🤖 AI ผู้ช่วยผู้ปกครอง</h2><p class="sub">สรุปข้อมูลที่บันทึกในแอปและแนะนำขั้นตอนดูแลช่องปากทั่วไป</p>
+<div id="aiSummary" class="result">ยังไม่มีข้อมูลเพียงพอ กรุณาเพิ่มข้อมูลเด็กหรือทำแบบประเมินก่อน</div>
+<label>อยากสอบถามเรื่องใด?</label><textarea id="askText" placeholder="เช่น ลูกไม่ชอบแปรงฟัน ควรเริ่มอย่างไร"></textarea><button class="btn" onclick="askAssistant()">ขอคำแนะนำ</button><div id="askResult" style="margin-top:10px"></div>
+<div class="notice">ผู้ช่วยนี้ใช้กฎและชุดคำแนะนำที่เตรียมไว้ ไม่ใช่โมเดล AI ที่ผ่านการรับรองทางการแพทย์ และไม่สามารถให้การวินิจฉัยหรือคำสั่งรักษาได้</div>
+</div></section>
+
+<section class="view" id="history">
+<div class="card"><h2>📚 ประวัติและนัดหมาย</h2><label>วันที่นัดหมายครั้งถัดไป</label><input type="date" id="appointmentDate"><label>หมายเหตุ</label><input id="appointmentNote" placeholder="เช่น นัดตรวจสุขภาพช่องปาก"><button class="btn" onclick="saveAppointment()">บันทึกนัดหมาย</button><div id="appointmentList"></div></div>
+<div class="card"><h2>บันทึกกิจกรรม</h2><div id="historyList" class="muted">ยังไม่มีข้อมูล</div></div>
+</section>
+
+<section class="view" id="staff">
+<div class="card"><h2>🩺 หน้าสำหรับเจ้าหน้าที่ทันตกรรม</h2><p class="sub">ดูข้อมูลสรุปที่ผู้ปกครองบันทึกบนอุปกรณ์นี้ ใช้ประกอบการซักประวัติและให้คำแนะนำ</p>
+<div class="stats"><div class="stat"><b id="sPhotos">0</b><small>ภาพที่บันทึก</small></div><div class="stat"><b id="sTeeth">0</b><small>ซี่ฟันที่ทำเครื่องหมาย</small></div><div class="stat"><b id="sAppts">0</b><small>นัดหมาย</small></div></div>
+<div id="staffSummary" class="result">ยังไม่มีข้อมูลเด็ก</div><h2 style="margin-top:16px">รายการซี่ฟันที่ผู้ปกครองทำเครื่องหมาย</h2><div id="staffTeeth" class="muted">ยังไม่มีข้อมูล</div>
+<button class="btn secondary" onclick="exportData()">ส่งออกข้อมูลเป็น JSON</button>
+<button class="btn danger small" onclick="clearAll()">ล้างข้อมูลทั้งหมดในเครื่องนี้</button>
+</div></section>
+</main>
+<div class="modalback" id="toothModal"><div class="modal"><div class="between"><h2 id="modalTitle">บันทึกซี่ฟัน</h2><button class="btn secondary small" onclick="closeTooth()">ปิด</button></div><label>สิ่งที่สังเกต</label><select id="toothStatus"><option value="">ยังไม่พบสิ่งผิดปกติที่สังเกตได้</option><option>มีจุดสีขาว/ขุ่น</option><option>มีจุดสีน้ำตาล/ดำ</option><option>ฟันแตกหรือบิ่น</option><option>เด็กบอกว่าปวด</option><option>เหงือกบวม/เลือดออก</option><option>ไม่แน่ใจ / ต้องการให้ตรวจ</option></select><label>หมายเหตุ</label><textarea id="toothMemo" placeholder="ระบุรายละเอียดเพิ่มเติม (ไม่บังคับ)"></textarea><button class="btn" onclick="saveTooth()">บันทึก</button></div></div>
+<footer>ParentDent AI Prototype • ข้อมูลเก็บในอุปกรณ์นี้เพื่อทดลองเท่านั้น</footer>
+<script>
+const KEY='parentdent_demo_v1';
+let data={child:null,photos:[],teeth:{},risk:null,appointments:[],logs:[]},selectedTooth=null,photoData=null;
+function load(){try{const x=JSON.parse(localStorage.getItem(KEY));if(x)data={...data,...x}}catch(e){}}
+function persist(){localStorage.setItem(KEY,JSON.stringify(data));refresh();}
+function log(msg){data.logs.unshift({msg,date:new Date().toLocaleString('th-TH')});}
+function showView(id){document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.view===id));if(id==='assistant')updateAI();if(id==='staff')updateStaff();if(id==='history')updateHistory();if(id==='teeth')renderTeeth();window.scrollTo(0,0)}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>showView(b.dataset.view)));
+function saveChild(){const name=document.getElementById('childName').value.trim(),age=Number(document.getElementById('childAge').value);if(!name||!age||age<2||age>12){alert('กรุณากรอกรหัส/ชื่อเล่นและอายุ 2–12 ปี');return}data.child={name,age,klass:childClass.value,note:childNote.value.trim()};log('บันทึกข้อมูลเด็ก');persist();alert('บันทึกข้อมูลแล้ว')}
+function refresh(){const c=data.child;homeChild.textContent=c?`${c.name} • อายุ ${c.age} ปี • ${c.klass}`:'เพิ่มข้อมูลเด็กเพื่อเริ่มบันทึกสุขภาพช่องปาก';homeChildStatus.textContent=c?'มีข้อมูลเด็กแล้ว':'ยังไม่ได้เพิ่มข้อมูล';if(c){childName.value=c.name;childAge.value=c.age;childClass.value=c.klass;childNote.value=c.note||''}renderTeeth();renderPhotos();updateHistory();updateStaff()}
+const toothIds=['55','54','53','52','51','61','62','63','64','65','85','84','83','82','81','71','72','73','74','75'];
+function renderTeeth(){if(!upperTeeth)return;upperTeeth.innerHTML='';lowerTeeth.innerHTML='';toothIds.forEach((id,i)=>{const b=document.createElement('button');b.className='tooth'+(data.teeth[id]?' flag':'');b.innerHTML=`<strong>🦷</strong>${id}`;b.onclick=()=>openTooth(id);(i<10?upperTeeth:lowerTeeth).appendChild(b)})}
+function openTooth(id){selectedTooth=id;modalTitle.textContent='บันทึกฟันซี่ '+id;toothStatus.value=data.teeth[id]?.status||'';toothMemo.value=data.teeth[id]?.memo||'';toothModal.classList.add('show')}
+function closeTooth(){toothModal.classList.remove('show')}
+function saveTooth(){const status=toothStatus.value,memo=toothMemo.value.trim();if(status)data.teeth[selectedTooth]={status,memo};else delete data.teeth[selectedTooth];log('บันทึกข้อมูลฟันซี่ '+selectedTooth);persist();closeTooth()}
+photoInput.addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;if(f.size>5*1024*1024){alert('กรุณาเลือกภาพขนาดไม่เกิน 5 MB');photoInput.value='';return}const r=new FileReader();r.onload=()=>{photoData=r.result;photoPreview.src=photoData;photoPreview.style.display='block'};r.readAsDataURL(f)});
+function savePhoto(){if(!photoData){alert('กรุณาเลือกหรือถ่ายภาพก่อน');return}data.photos.unshift({id:Date.now(),note:photoNote.value,date:new Date().toLocaleString('th-TH'),image:photoData});log('บันทึกภาพช่องปาก');photoData=null;photoInput.value='';photoPreview.style.display='none';persist();alert('บันทึกภาพแล้ว')}
+function renderPhotos(){if(!photoList)return;photoList.innerHTML=data.photos.map(p=>`<div class="item"><b>${esc(p.note)}</b><p>${esc(p.date)}</p><img class="photo" src="${p.image}" alt="ภาพที่บันทึก"></div>`).join('')||'<div class="empty">ยังไม่มีภาพที่บันทึก</div>'}
+const qs=[
+['แปรงฟัน','ผู้ปกครองช่วยดูแลหรือแปรงฟันให้เด็กวันละ 2 ครั้งหรือไม่?',['ทุกวัน วันละ 2 ครั้ง','บางวัน / วันละครั้ง','น้อยกว่านั้น / ไม่แน่ใจ'],[0,1,2]],
+['ก่อนนอน','เด็กแปรงฟันก่อนนอนทุกคืนหรือไม่?',['ทุกคืน','บางคืน','ไม่ค่อย / ไม่แน่ใจ'],[0,1,2]],
+['ยาสีฟัน','เด็กใช้ยาสีฟันผสมฟลูออไรด์ตามคำแนะนำหรือไม่?',['ใช้เป็นประจำ','ไม่แน่ใจว่ามีฟลูออไรด์หรือไม่','ไม่ได้ใช้'],[0,1,2]],
+['เครื่องดื่มหวาน','เด็กดื่มน้ำหวาน/น้ำอัดลม/นมปรุงแต่งบ่อยเพียงใด?',['นาน ๆ ครั้ง','หลายวันต่อสัปดาห์','ทุกวันหรือหลายครั้งต่อวัน'],[0,1,2]],
+['ขนมหวาน','เด็กกินขนมหวานหรือขนมเหนียวติดฟันบ่อยเพียงใด?',['นาน ๆ ครั้ง','หลายวันต่อสัปดาห์','ทุกวันหรือหลายครั้งต่อวัน'],[0,1,2]],
+['ตรวจฟัน','เด็กได้รับการตรวจสุขภาพช่องปากโดยทันตบุคลากรในช่วง 6–12 เดือนที่ผ่านมาหรือไม่?',['ได้รับการตรวจแล้ว','เกิน 12 เดือน','ไม่เคย / ไม่แน่ใจ'],[0,1,2]]
+];
+function renderQuestions(){questions.innerHTML=qs.map((q,i)=>`<div style="padding:8px 0;border-bottom:1px solid var(--line)"><b style="font-size:13px">${i+1}. ${q[0]}</b>${q[1]}${q[2].map((v,j)=>`<label class="check"><input type="radio" name="q${i}" value="${q[3][j]}">${v}</label>`).join('')}</div>`).join('')}
+function calculateRisk(){let score=0,missing=[];qs.forEach((q,i)=>{const v=document.querySelector(`input[name=q${i}]:checked`);if(!v)missing.push(i+1);else score+=Number(v.value)});if(missing.length){alert('กรุณาตอบให้ครบทุกข้อ ข้อที่ยังไม่ได้ตอบ: '+missing.join(', '));return}let level=score<=3?'ปัจจัยเสี่ยงจากพฤติกรรมที่สำรวจค่อนข้างน้อย':score<=7?'พบพฤติกรรมบางข้อที่ควรปรับ':'พบหลายพฤติกรรมที่ควรปรับและควรปรึกษาทันตบุคลากร';data.risk={score,level,date:new Date().toLocaleString('th-TH')};log('ทำแบบประเมินปัจจัยเสี่ยง');persist();riskResult.innerHTML=`<div class="result"><strong>สรุปผลแบบประเมิน</strong><br>${level}<br>คะแนนรวม ${score} จาก 12<br><br>คำแนะนำ: แปรงฟันด้วยยาสีฟันผสมฟลูออไรด์วันละ 2 ครั้ง โดยผู้ปกครองช่วยดูแล ลดความถี่การกินหวาน และพาเด็กตรวจสุขภาพช่องปากตามคำแนะนำของทันตบุคลากร<br><span class="muted">ผลนี้เป็นการสรุปพฤติกรรม ไม่ใช่การวินิจฉัยหรือระดับความเสี่ยงฟันผุที่ผ่านการรับรอง</span></div>`}
+function updateAI(){const c=data.child;let marked=Object.entries(data.teeth).filter(([k,v])=>v.status);aiSummary.innerHTML=`<strong>สรุปข้อมูลที่มีในแอป</strong><br>เด็ก: ${c?esc(c.name)+' อายุ '+c.age+' ปี':'ยังไม่ได้เพิ่มข้อมูลเด็ก'}<br>ภาพช่องปาก: ${data.photos.length} ภาพ<br>ซี่ฟันที่ผู้ปกครองทำเครื่องหมาย: ${marked.length} ซี่<br>ผลประเมินพฤติกรรม: ${data.risk?esc(data.risk.level):'ยังไม่ได้ทำแบบประเมิน'}<br><br>ควรนำภาพและรายการที่ทำเครื่องหมายไปปรึกษาทันตบุคลากร เพื่อรับการตรวจยืนยันและคำแนะนำที่เหมาะกับเด็ก`}
+function askAssistant(){const q=askText.value.trim();if(!q){alert('กรุณาพิมพ์คำถาม');return}let a='แนะนำให้ผู้ปกครองแปรงฟันให้เด็กหรือช่วยแปรงซ้ำวันละ 2 ครั้ง โดยเฉพาะก่อนนอน ใช้ยาสีฟันผสมฟลูออไรด์ในปริมาณเหมาะสมกับวัย ลดความถี่การกินขนมและเครื่องดื่มหวาน และพาเด็กตรวจฟันตามนัด';if(/ปวด|บวม|เลือด|ไข้|หนอง/.test(q))a='หากเด็กมีอาการปวด บวม มีไข้ มีหนอง หรือรับประทานอาหารลำบาก ควรติดต่อคลินิกทันตกรรมเพื่อขอรับการประเมินโดยเร็ว หากบวมลามหรือมีปัญหาการหายใจ/กลืน ให้ไปโรงพยาบาลทันที';else if(/ไม่ยอม|ไม่ชอบ|กลัว/.test(q))a='ลองให้เด็กเลือกแปรงสีฟันที่ชอบ แปรงไปพร้อมกัน ใช้เพลงหรือนาฬิกาจับเวลา และชมเชยเมื่อร่วมมือ ควรให้ผู้ปกครองช่วยแปรงซ้ำจนเด็กทำความสะอาดได้ทั่วถึง';else if(/ฟลูออไรด์|ยาสีฟัน/.test(q))a='เลือกยาสีฟันผสมฟลูออไรด์ที่มีความเข้มข้นเหมาะสมตามคำแนะนำทันตบุคลากร และให้ผู้ปกครองควบคุมปริมาณยาสีฟันและดูแลไม่ให้เด็กกลืน';askResult.innerHTML=`<div class="result"><strong>คำแนะนำเบื้องต้น</strong><br>${a}<br><span class="muted">คำตอบอัตโนมัติจากชุดความรู้ตัวอย่าง หากมีข้อสงสัยเฉพาะรายให้ปรึกษาทันตบุคลากร</span></div>`}
+function saveAppointment(){if(!appointmentDate.value){alert('กรุณาเลือกวันที่นัด');return}data.appointments.push({date:appointmentDate.value,note:appointmentNote.value.trim()});log('เพิ่มนัดหมาย '+appointmentDate.value);persist();appointmentDate.value='';appointmentNote.value='';alert('บันทึกนัดหมายแล้ว')}
+function updateHistory(){if(!appointmentList)return;appointmentList.innerHTML=data.appointments.map((a,i)=>`<div class="item"><div class="between"><b>${esc(a.date)}</b><button class="btn danger small" onclick="deleteAppointment(${i})">ลบ</button></div><p>${esc(a.note||'นัดหมายตรวจฟัน')}</p></div>`).join('')||'<div class="empty">ยังไม่มีนัดหมาย</div>';historyList.innerHTML=data.logs.map(l=>`<div class="item"><b>${esc(l.msg)}</b><p>${esc(l.date)}</p></div>`).join('')||'ยังไม่มีข้อมูล'}
+function deleteAppointment(i){data.appointments.splice(i,1);persist()}
+function updateStaff(){if(!staffSummary)return;sPhotos.textContent=data.photos.length;sTeeth.textContent=Object.keys(data.teeth).length;sAppts.textContent=data.appointments.length;const c=data.child;staffSummary.innerHTML=c?`<strong>ข้อมูลเด็ก</strong><br>รหัส/ชื่อเล่น: ${esc(c.name)}<br>อายุ: ${c.age} ปี • ${esc(c.klass)}<br>หมายเหตุ: ${esc(c.note||'-')}<br><br><strong>สรุปพฤติกรรม</strong><br>${data.risk?esc(data.risk.level)+' (คะแนน '+data.risk.score+'/12)':'ยังไม่มีผลประเมิน'}<br><strong>ภาพประกอบ:</strong> ${data.photos.length} ภาพ<br><strong>นัดหมาย:</strong> ${data.appointments.length} รายการ`:'ยังไม่มีข้อมูลเด็ก';staffTeeth.innerHTML=Object.entries(data.teeth).map(([id,v])=>`<div class="item"><b>ฟันซี่ ${id}</b><p>${esc(v.status)} ${esc(v.memo||'')}</p></div>`).join('')||'ยังไม่มีการทำเครื่องหมายซี่ฟัน'}
+function exportData(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='ParentDent_demo_export.json';a.click();URL.revokeObjectURL(url)}
+function clearAll(){if(confirm('ต้องการลบข้อมูลทั้งหมดที่บันทึกไว้ในอุปกรณ์นี้หรือไม่?')){localStorage.removeItem(KEY);data={child:null,photos:[],teeth:{},risk:null,appointments:[],logs:[]};refresh();alert('ล้างข้อมูลแล้ว')}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+load();renderQuestions();refresh();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
